@@ -66,6 +66,13 @@ TIMEFRAME_WEIGHTS = {
 
 # -- Bot Operation --
 MAGIC_NUMBER = 202407  # A unique number to identify trades opened by this bot.
+
+# Order execution filling mode. Can be "FOK", "IOC", or "RETURN".
+# FOK (Fill Or Kill): The order must be executed in the specified volume, otherwise it's canceled.
+# IOC (Immediate Or Cancel): The trader agrees to execute a deal with the maximum available volume in the market within that indicated in the order. The remaining volume is canceled.
+# Most brokers support FOK. Change if you get "Unsupported filling mode" errors.
+FILLING_MODE = "FOK"
+
 # Time to wait in seconds between each main loop iteration
 LOOP_SLEEP_SECONDS = 5
 # The timeframe the bot primarily operates on for signals

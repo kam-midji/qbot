@@ -125,6 +125,18 @@ def get_open_positions(symbol=None):
     return mt5.positions_get()
 
 
+# Helper function to get the correct filling mode constant
+def _get_filling_mode():
+    """Maps the string from config to the MT5 constant."""
+    FILLING_MODE_MAP = {
+        "FOK": mt5.ORDER_FILLING_FOK,
+        "IOC": mt5.ORDER_FILLING_IOC,
+        "RETURN": mt5.ORDER_FILLING_RETURN,
+    }
+    filling_mode = FILLING_MODE_MAP.get(config.FILLING_MODE.upper(), mt5.ORDER_FILLING_FOK)
+    log.debug(f"Using filling mode: {config.FILLING_MODE.upper()} -> {filling_mode}")
+    return filling_mode
+
 def place_order(symbol, order_type, volume, stop_loss, take_profit, comment=""):
     """
     Places a new market order.
@@ -164,7 +176,7 @@ def place_order(symbol, order_type, volume, stop_loss, take_profit, comment=""):
         "magic": config.MAGIC_NUMBER,
         "comment": comment,
         "type_time": mt5.ORDER_TIME_GTC,
-        "type_filling": mt5.ORDER_FILLING_IOC,
+        "type_filling": _get_filling_mode(),
     }
 
     log.info(f"Placing order: {request}")
@@ -202,7 +214,7 @@ def close_position(position, comment=""):
         "magic": config.MAGIC_NUMBER,
         "comment": comment,
         "type_time": mt5.ORDER_TIME_GTC,
-        "type_filling": mt5.ORDER_FILLING_IOC,
+        "type_filling": _get_filling_mode(),
     }
 
     log.info(f"Closing position {position.ticket}: {request}")
