@@ -1,0 +1,7 @@
+# MetaTrader5 is platform-specific and may not be installable in all environments.
+# It is commented out for compatibility with standard CI/CD and testing environments.
+# In a production environment where the bot will connect to the MT5 terminal,
+# install it manually via: pip install MetaTrader5
+# MetaTrader5
+pandas
+numpy
