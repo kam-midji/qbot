@@ -124,7 +124,13 @@ def handle_end_of_day_closure():
     """
     Checks if it's the end-of-day close time and closes all open trades.
     """
-    server_time = datetime.fromtimestamp(mt5.terminal_info().time)
+    # Get the last known server time from the latest tick for the asset
+    last_tick = mt5_connector.get_symbol_info_tick(config.ASSET)
+    if not last_tick or last_tick.time == 0:
+        log.warning("Could not get last tick time for EOD check. Skipping.")
+        return
+
+    server_time = datetime.fromtimestamp(last_tick.time)
     close_time_str = server_time.strftime('%Y-%m-%d') + " " + config.END_OF_DAY_CLOSE_TIME
     close_time = datetime.strptime(close_time_str, '%Y-%m-%d %H:%M')
 

@@ -56,6 +56,10 @@ def get_account_info():
     return mt5.account_info()
 
 
+def get_symbol_info_tick(symbol):
+    """Retrieves the latest tick information for a symbol."""
+    return mt5.symbol_info_tick(symbol)
+
 def get_symbol_info(symbol):
     """
     Retrieves information for a specific symbol and ensures it's selected.
